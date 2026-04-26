@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class SpiderCollector : MonoBehaviour
+public class SpiderCollect : MonoBehaviour
 {
-    public int spidersCollected = 0;
+    public static int score = 0;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Spider"))
-        {
-            spidersCollected++;
-            Debug.Log("Spider collected! Total: " + spidersCollected);
-            Destroy(other.gameObject);
-        }
+        Debug.Log("Hit by: " + other.name);
+        score++;
+        Destroy(gameObject);
     }
-}                                
+}
