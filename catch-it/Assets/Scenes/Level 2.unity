@@ -8027,7 +8027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46597f6c44c0a45398747b71a35c9c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderSpawner
-  spiderPrefab: {fileID: 7466919617501752195, guid: 82bb22719600943cf8029323b8b51555, type: 3}
+  spiderPrefab: {fileID: 4764806104014570400, guid: ca6bd8c820d2048dca1cf60d8d7c3efc, type: 3}
   spawnPoints:
   - {fileID: 653365288}
   - {fileID: 745040317}
