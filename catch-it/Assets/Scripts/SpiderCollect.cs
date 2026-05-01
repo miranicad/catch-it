@@ -8,8 +8,8 @@ public class SpiderCollect : MonoBehaviour
     {
         Debug.Log("Hit by: " + other.name);
 
-        if (other.name == "Collider" || 
-            other.name == "PinchArea" || 
+        if (other.name == "Collider" ||
+            other.name == "PinchArea" ||
             other.name == "PinchPointRange")
         {
             score++;
