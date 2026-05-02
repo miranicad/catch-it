@@ -21,9 +21,10 @@ public class LevelConfig
     [Min(1)]
     public int MaxActiveSpiders = 1;
 
-    public float SpiderScale = 1.0f;
-    public float SpiderSpeed = 0.0f;
+    [Header("Spawn Configuration")]
+    public Transform spawnPointContainer;
 
+    [Header("Panic Mode Settings")]
     public bool PanicModeEnabled = true;
     public PanicModeBehavior PanicModeBehavior = PanicModeBehavior.HideSpiders;
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DynamicSpiderSpawner : MonoBehaviour
@@ -26,9 +27,21 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
     public void SpawnSingleSpider(LevelConfig config)
     {
-        if (spawnPoints == null || spawnPoints.Length == 0)
+        // Get spawn points from config container, or fall back to inspector-assigned points
+        Transform[] pointsToUse = spawnPoints;
+
+        if (config.spawnPointContainer != null)
         {
-            Debug.LogError("No spawn points assigned.");
+            // Get all child transforms of the container (excluding the container itself)
+            pointsToUse = config.spawnPointContainer
+                .GetComponentsInChildren<Transform>()
+                .Where(t => t != config.spawnPointContainer)
+                .ToArray();
+        }
+
+        if (pointsToUse == null || pointsToUse.Length == 0)
+        {
+            Debug.LogError("No spawn points assigned in config or inspector.");
             return;
         }
 
@@ -40,7 +53,7 @@ public class DynamicSpiderSpawner : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Transform spawnPoint = pointsToUse[Random.Range(0, pointsToUse.Length)];
 
         GameObject spider = SpawnAtSurfaceOrFallback(prefab, spawnPoint);
 
@@ -115,17 +128,15 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
     private void ApplyLevelConfigToSpider(GameObject spider, LevelConfig config)
     {
-        float scale = config.SpiderSizeKind == SpiderSizeKind.Small
-            ? config.SpiderScale
-            : config.SpiderScale * 1.5f;
+        // we assume the prefab has a local scale that makes it appear as a "small" spider in the game world. A large spider will be made larger here.
+        if (config.SpiderSizeKind == SpiderSizeKind.Large)
+        {
+            spider.transform.localScale *= 1.5f;
+        }
 
-        spider.transform.localScale = Vector3.one * scale;
-
-        // SpiderMovement movement = spider.GetComponent<SpiderMovement>();
-
-        // if (movement != null)
-        // {
-        //     movement.Configure(config.SpiderMovementKind, config.SpiderSpeed);
-        // }
+        if (config.SpiderMovementKind != SpiderMovementKind.Static)
+        {
+            // todo: add movement
+        }
     }
 }
