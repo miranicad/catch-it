@@ -8098,7 +8098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynamicSpiderSpawner
   cartoonSpiderPrefab: {fileID: 7466919617501752195, guid: a4a8e5a84df165e45bac7bb0e1fa4147, type: 3}
-  realisticSpiderPrefab: {fileID: 4764806104014570400, guid: ca6bd8c820d2048dca1cf60d8d7c3efc, type: 3}
+  realisticSpiderPrefab: {fileID: 8638208817141055491, guid: c9aac0ce43afd1b4882c88dea9ab7159, type: 3}
   spawnPoints:
   - {fileID: 1906363612}
   - {fileID: 1543118636}
@@ -16251,6 +16251,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1716290687}
   - {fileID: 745040317}
   - {fileID: 653365288}
   m_Father: {fileID: 1820582740}
@@ -27138,6 +27139,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4172469706349380, guid: cd2cb6594c000ed48abd197ee92d546d, type: 3}
   m_PrefabInstance: {fileID: 1661304399}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1716290686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1716290687}
+  m_Layer: 0
+  m_Name: SpawnPoint_Bed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1716290687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716290686}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.286, y: -0.934, z: 0.8839998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1069237896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1722442863
 PrefabInstance:
   m_ObjectHideFlags: 0
