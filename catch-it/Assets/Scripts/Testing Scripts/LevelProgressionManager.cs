@@ -94,11 +94,6 @@ public class LevelProgressionManager : MonoBehaviour
 
     public void ActivatePanicMode()
     {
-        if (!CurrentLevel.PanicModeEnabled)
-        {
-            return;
-        }
-
         Debug.Log("Panic mode activated");
 
         spiderSpawner.ClearSpiders();

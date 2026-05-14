@@ -10,6 +10,7 @@ public class LevelConfig
     [TextArea]
     public string Description;
 
+    [Header("Spider Difficulty Settings")]
     public EnvironmentKind EnvironmentKind = EnvironmentKind.Inside;
     public SpiderVisualKind SpiderVisualKind = SpiderVisualKind.Cartoon;
     public SpiderSizeKind SpiderSizeKind = SpiderSizeKind.Small;
@@ -22,10 +23,9 @@ public class LevelConfig
     public int MaxActiveSpiders = 1;
 
     [Header("Spawn Configuration")]
-    public Transform spawnPointContainer;
+    public Transform spawnPointContainer; // optional, will be null if custom level created from menu
 
     [Header("Panic Mode Settings")]
-    public bool PanicModeEnabled = true;
     public PanicModeBehavior PanicModeBehavior = PanicModeBehavior.HideSpiders;
 }
 

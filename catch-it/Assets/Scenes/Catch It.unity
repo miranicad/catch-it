@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &4811959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4811961}
+  - component: {fileID: 4811960}
+  m_Layer: 0
+  m_Name: SpiderSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &4811960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3a6ff244ea9d54d9e12477d0cf52fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicSpiderSpawner
+  cartoonSpiderPrefab: {fileID: 7466919617501752195, guid: a4a8e5a84df165e45bac7bb0e1fa4147, type: 3}
+  realisticSpiderPrefab: {fileID: 8638208817141055491, guid: c9aac0ce43afd1b4882c88dea9ab7159, type: 3}
+  spawnPoints:
+  - {fileID: 1906363612}
+  - {fileID: 1543118636}
+  - {fileID: 745040317}
+--- !u!4 &4811961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.13102, y: 1.95326, z: -24.41792}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5186009
 GameObject:
   m_ObjectHideFlags: 0
@@ -3549,6 +3599,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1906363612}
+  - {fileID: 280074826}
   - {fileID: 1543118636}
   - {fileID: 680585234}
   m_Father: {fileID: 1820582740}
@@ -4422,6 +4473,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272781442}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &280074825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 280074826}
+  m_Layer: 0
+  m_Name: SpawnPoint_Table
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &280074826
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280074825}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.308, y: -0.838, z: -9.802}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 212881377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &282411875
 GameObject:
   m_ObjectHideFlags: 0
@@ -9566,7 +9648,7 @@ Transform:
   m_GameObject: {fileID: 653365287}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.487, y: -0.06, z: -11.545}
+  m_LocalPosition: {x: -3.404, y: -0.06, z: -11.545}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10010,7 +10092,7 @@ Transform:
   m_GameObject: {fileID: 680585233}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.358, y: -1.479, z: -12.918}
+  m_LocalPosition: {x: 1.895, y: -1.479, z: -13.043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20216,8 +20298,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1309849401}
   - component: {fileID: 1309849402}
+  - component: {fileID: 1309849404}
+  - component: {fileID: 1309849403}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20246,7 +20330,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309849399}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9738aa7f429abd4292d141f9ad2142d, type: 3}
   m_Name: 
@@ -20262,7 +20346,6 @@ MonoBehaviour:
     SpidersToCatch: 3
     MaxActiveSpiders: 1
     spawnPointContainer: {fileID: 212881377}
-    PanicModeEnabled: 1
     PanicModeBehavior: 0
   - LevelId: level_02_realistic_controlled
     DisplayName: Level 2 - More Realistic Spiders
@@ -20271,11 +20354,65 @@ MonoBehaviour:
     SpiderVisualKind: 2
     SpiderSizeKind: 0
     SpiderMovementKind: 0
-    SpidersToCatch: 5
+    SpidersToCatch: 2
     MaxActiveSpiders: 1
     spawnPointContainer: {fileID: 1069237896}
-    PanicModeEnabled: 1
     PanicModeBehavior: 0
+  spiderSpawner: {fileID: 510291677}
+--- !u!114 &1309849403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309849399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a2ce36e32cc7a44967ef5d5144f62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameMenuController
+  introPanel: {fileID: 0}
+  mainMenuPanel: {fileID: 0}
+  customLevelPanel: {fileID: 0}
+  levelCompletePanel: {fileID: 0}
+  endPanel: {fileID: 0}
+  panicPanel: {fileID: 0}
+--- !u!114 &1309849404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309849399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18563873cd6578948ad9c37cc866456e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  predefinedLevels:
+  - LevelId: level_01_cartoon_safe
+    DisplayName: Level 1 - Friendly Spiders
+    Description: Small cartoon spiders in a safe indoor environment
+    EnvironmentKind: 1
+    SpiderVisualKind: 1
+    SpiderSizeKind: 0
+    SpiderMovementKind: 0
+    SpidersToCatch: 3
+    MaxActiveSpiders: 1
+    spawnPointContainer: {fileID: 212881377}
+    PanicModeBehavior: 0
+  - LevelId: level_02_realistic_controlled
+    DisplayName: Level 2 - More Realistic Spiders
+    Description: More realistic spiders, still predictable and controlled
+    EnvironmentKind: 1
+    SpiderVisualKind: 2
+    SpiderSizeKind: 0
+    SpiderMovementKind: 0
+    SpidersToCatch: 2
+    MaxActiveSpiders: 1
+    spawnPointContainer: {fileID: 1069237896}
+    PanicModeBehavior: 0
+  menuController: {fileID: 1309849403}
   spiderSpawner: {fileID: 510291677}
 --- !u!1001 &1313177786
 PrefabInstance:
@@ -32507,3 +32644,4 @@ SceneRoots:
   - {fileID: 1820582740}
   - {fileID: 150187696}
   - {fileID: 1309849401}
+  - {fileID: 4811961}
