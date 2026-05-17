@@ -11,7 +11,8 @@ public class DynamicSpiderSpawner : MonoBehaviour
     public GameObject spiderPrefabRealistic;
 
     [Header("Spawn Points")]
-    public Transform[] spawnPoints;
+    public Transform spawnPointsInsideContainer;
+    public Transform spawnPointsOutsideContainer;
 
     private readonly List<GameObject> spawnedSpiders = new();
 
@@ -29,16 +30,21 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
     public void SpawnSingleSpider(LevelConfig config)
     {
-        // Get spawn points from config container, or fall back to inspector-assigned points
-        Transform[] pointsToUse = spawnPoints;
+        Transform[] pointsToUse;
 
-        if (config.spawnPointContainer != null)
+        // Get spawn points from environment specific container
+        Transform containerToUse = config.EnvironmentKind == EnvironmentKind.Inside ? spawnPointsInsideContainer : spawnPointsOutsideContainer;
+        if (containerToUse == null && config.spawnPointContainer != null)
         {
             // Get all child transforms of the container (excluding the container itself)
             pointsToUse = config.spawnPointContainer
                 .GetComponentsInChildren<Transform>()
                 .Where(t => t != config.spawnPointContainer)
                 .ToArray();
+        }
+        else
+        {
+            pointsToUse = containerToUse.GetComponentsInChildren<Transform>().Where(t => t != containerToUse).ToArray();
         }
 
         if (pointsToUse == null || pointsToUse.Length == 0)

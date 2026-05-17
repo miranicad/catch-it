@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scene References")]
     [SerializeField] private DynamicSpiderSpawner spiderSpawner;
+    public Transform playerInsideSpawnPoint;
 
     private readonly List<LevelConfig> activeLevels = new();
 
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour
 
     public void StartPredefinedLevels()
     {
+        Debug.Log("METHOD CALLED FOR StartPredefinedLevels.");
+
         activeLevels.Clear();
         activeLevels.AddRange(predefinedLevels);
 
@@ -91,6 +94,22 @@ public class GameManager : MonoBehaviour
         caughtSpiders = 0;
 
         LevelConfig config = CurrentLevel;
+
+        if (levelIndex == 0 && config.EnvironmentKind == EnvironmentKind.Inside)
+        {
+            // For the first level, if it's an inside environment, spawn the player at the inside spawn point.
+            // For later levels, we can consider more complex transitions (e.g., fade out/in, moving the player, etc.)
+            if (playerInsideSpawnPoint != null)
+            {
+                Transform playerTransform = Camera.main.transform; // Assuming the main camera represents the player's position
+                playerTransform.position = playerInsideSpawnPoint.position;
+                playerTransform.rotation = playerInsideSpawnPoint.rotation;
+            }
+            else
+            {
+                Debug.LogWarning("Player inside spawn point is not assigned.");
+            }
+        }
 
         Debug.Log($"Starting level: {config.DisplayName}");
 

@@ -23,7 +23,7 @@ public class LevelConfig
     public int MaxActiveSpiders = 1;
 
     [Header("Spawn Configuration")]
-    public Transform spawnPointContainer; // optional, will be null if custom level created from menu
+    public Transform spawnPointContainer; // optional, will be null if custom level created from menu; TODO! remove eventually! is now handled in DynamicSpiderSpawner by checking config first, then falling back to inspector assigned containers
 
     [Header("Panic Mode Settings")]
     public PanicModeBehavior PanicModeBehavior = PanicModeBehavior.HideSpiders;
