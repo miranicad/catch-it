@@ -50,7 +50,8 @@ public enum SpiderSizeKind
 public enum SpiderMovementKind
 {
     Static,
-    Slow
+    Idle,
+    Walking
 }
 public enum PanicModeBehavior
 {

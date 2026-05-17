@@ -5,8 +5,10 @@ using UnityEngine;
 public class DynamicSpiderSpawner : MonoBehaviour
 {
     [Header("Spider Prefabs")]
-    public GameObject cartoonSpiderPrefab;
-    public GameObject realisticSpiderPrefab;
+    public GameObject spiderPrefabCartoonStatic;
+    public GameObject spiderPrefabCartoonWalking;
+    public GameObject spiderPrefabCartoonIdle;
+    public GameObject spiderPrefabRealistic;
 
     [Header("Spawn Points")]
     public Transform[] spawnPoints;
@@ -45,11 +47,11 @@ public class DynamicSpiderSpawner : MonoBehaviour
             return;
         }
 
-        GameObject prefab = GetSpiderPrefab(config.SpiderVisualKind);
+        GameObject prefab = GetSpiderPrefab(config);
 
         if (prefab == null)
         {
-            Debug.LogError($"No prefab assigned for spider type: {config.SpiderVisualKind}");
+            Debug.LogError($"No prefab assigned for spider type: {config}");
             return;
         }
 
@@ -75,18 +77,28 @@ public class DynamicSpiderSpawner : MonoBehaviour
         spawnedSpiders.Clear();
     }
 
-    private GameObject GetSpiderPrefab(SpiderVisualKind spiderVisualKind)
+    private GameObject GetSpiderPrefab(LevelConfig config)
     {
-        switch (spiderVisualKind)
+        switch (config.SpiderVisualKind)
         {
             case SpiderVisualKind.Cartoon:
-                return cartoonSpiderPrefab;
+                switch (config.SpiderMovementKind)
+                {
+                    case SpiderMovementKind.Static:
+                        return spiderPrefabCartoonStatic;
+                    case SpiderMovementKind.Idle:
+                        return spiderPrefabCartoonIdle;
+                    case SpiderMovementKind.Walking:
+                        return spiderPrefabCartoonWalking;
+                    default:
+                        return spiderPrefabCartoonStatic;
+                }
 
             case SpiderVisualKind.Realistic:
-                return realisticSpiderPrefab;
+                return spiderPrefabRealistic;
 
             default:
-                return cartoonSpiderPrefab;
+                return spiderPrefabCartoonStatic;
         }
     }
 
