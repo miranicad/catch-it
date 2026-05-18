@@ -433,8 +433,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3146025709729856003}
   - component: {fileID: 974687744276076541}
+  - component: {fileID: 8714736000533496310}
   - component: {fileID: 1969507856243004849}
-  - component: {fileID: 4685949696649383890}
   m_Layer: 0
   m_Name: cute_spider
   m_TagString: Spider
@@ -481,6 +481,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8714736000533496310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638208817141055491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e003c0d06364549bd2d89195ab1cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderCatch
 --- !u!65 &1969507856243004849
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -502,15 +514,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6968317, y: 0.5636368, z: 0.6102867}
   m_Center: {x: 0.00842309, y: 0.4152484, z: 0.06760788}
---- !u!114 &4685949696649383890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8638208817141055491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6501c280d26aeb446957e4a9c94ffdf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpiderScript

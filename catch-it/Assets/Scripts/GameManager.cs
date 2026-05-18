@@ -88,6 +88,20 @@ public class GameManager : MonoBehaviour
         StartLevel(0);
     }
 
+    public void StartNextLevel()
+    {
+        int nextLevelIndex = currentLevelIndex + 1;
+        if (CurrentLevel != null && nextLevelIndex < activeLevels.Count)
+        {
+            Debug.Log("Starting next level.");
+            StartLevel(nextLevelIndex);
+        }
+        else
+        {
+            Debug.LogError("No current level to advance from.");
+        }
+    }
+
     public void RegisterSpiderCaught(GameObject spider)
     {
         if (CurrentLevel == null)
@@ -128,13 +142,15 @@ public class GameManager : MonoBehaviour
 
         if (nextLevelIndex < activeLevels.Count)
         {
-            StartLevel(nextLevelIndex);
+            menuController.ShowLevelComplete();
+            Debug.Log("Waiting for player to decide what's next.");
+            // StartLevel(nextLevelIndex);
         }
         else
         {
             Debug.Log("All active levels complete!");
-            // Show end screen / completion UI here.
 
+            // Show end screen / completion UI here.
             menuController.ShowEndScreen();
         }
     }
@@ -147,6 +163,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        menuController.ShowPanicPanel();
 
         Debug.Log("Panic mode activated");
 

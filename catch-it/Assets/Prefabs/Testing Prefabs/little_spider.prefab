@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6600493206837178396}
   - component: {fileID: 6198054051968260370}
   - component: {fileID: 4971595403458025342}
-  - component: {fileID: 4722506082989537326}
+  - component: {fileID: 1122732865434141438}
   m_Layer: 0
   m_Name: little_spider
   m_TagString: Spider
@@ -135,7 +135,7 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 2
   m_Center: {x: 0, y: 0.15596703, z: 0}
---- !u!114 &4722506082989537326
+--- !u!114 &1122732865434141438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,9 +144,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 258765008858621849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6501c280d26aeb446957e4a9c94ffdf2, type: 3}
+  m_Script: {fileID: 11500000, guid: 17c62c618a15f4994b54ae6adbf3ceed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpiderScript
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderCollect
 --- !u!1 &261870567832909615
 GameObject:
   m_ObjectHideFlags: 0

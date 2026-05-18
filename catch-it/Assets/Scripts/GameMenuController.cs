@@ -58,6 +58,7 @@ public class GameMenuController : MonoBehaviour
     {
         HideAll();
 
+        Debug.Log($"Showing panel: {panel.name}");
         if (panel != null)
         {
             panel.SetActive(true);
