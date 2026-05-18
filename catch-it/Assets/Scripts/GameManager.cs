@@ -16,21 +16,13 @@ public class GameManager : MonoBehaviour
     // Optional Level 3 if stable
     // End screen: “Thank you / Experiment complete”
 
-
     [Header("Level Configuration")]
     [SerializeField] private List<LevelConfig> predefinedLevels = new();
-
-    // [Header("Scene References")]
-    // [SerializeField] private DynamicSpiderSpawner spiderSpawner;
-
-    // private int currentLevelIndex = 0;
-    // private int caughtSpiders = 0;
-
-    // public LevelConfig CurrentLevel => levels[currentLevelIndex];
 
     [Header("References")]
     [SerializeField] private GameMenuController menuController;
 
+    [SerializeField] private OVRScreenFade screenFade;
     public Image fadeImage; // full-screen image for fading
 
     [Header("Scene References")]
@@ -131,30 +123,6 @@ public class GameManager : MonoBehaviour
         return caughtSpiders;
     }
 
-    private void CompleteCurrentLevel()
-    {
-        // todo Later: show final screen / experiment finished UI.
-        Debug.Log($"Level complete: {CurrentLevel.DisplayName}");
-
-        spiderSpawner.ClearSpiders();
-
-        int nextLevelIndex = currentLevelIndex + 1;
-
-        if (nextLevelIndex < activeLevels.Count)
-        {
-            menuController.ShowLevelComplete();
-            Debug.Log("Waiting for player to decide what's next.");
-            // StartLevel(nextLevelIndex);
-        }
-        else
-        {
-            Debug.Log("All active levels complete!");
-
-            // Show end screen / completion UI here.
-            menuController.ShowEndScreen();
-        }
-    }
-
     public void ActivatePanicMode()
     {
         // todo Later: show calm UI, pause panel, return-to-menu button, etc.
@@ -181,6 +149,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void CompleteCurrentLevel()
+    {
+        // todo Later: show final screen / experiment finished UI.
+        Debug.Log($"Level complete: {CurrentLevel.DisplayName}");
+
+        spiderSpawner.ClearSpiders();
+
+        int nextLevelIndex = currentLevelIndex + 1;
+
+        if (nextLevelIndex < activeLevels.Count)
+        {
+            menuController.ShowLevelComplete();
+            Debug.Log("Waiting for player to decide what's next.");
+            // StartLevel(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("All active levels complete!");
+
+            // Show end screen / completion UI here.
+            menuController.ShowEndScreen();
+        }
+    }
+
     IEnumerator LoadLevelRoutine(int levelIndex)
     {
         yield return StartCoroutine(Fade(1f, 0.4f));
@@ -204,74 +196,79 @@ public class GameManager : MonoBehaviour
         var isFirstLevelOfEnvironmentKind = activeLevels.FindIndex(l => l.EnvironmentKind == config.EnvironmentKind) == levelIndex;
         if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Inside)
         {
-            Debug.Log($"getting here??: {config.DisplayName}");
-
             // For the first level, if it's an inside environment, spawn the player at the inside spawn point.
             // For later levels, we can consider more complex transitions (e.g., fade out/in, moving the player, etc.)
             if (playerInsideSpawnPoint != null)
             {
                 PositionPlayerAtSpawn(playerInsideSpawnPoint);
-                //         Transform playerTransform = Camera.main.transform; // Assuming the main camera represents the player's position
-                //         playerTransform.position = playerInsideSpawnPoint.position;
-                //         playerTransform.rotation = playerInsideSpawnPoint.rotation;
             }
             else
             {
                 Debug.LogWarning("Player inside spawn point is not assigned.");
             }
         }
-        else
+        else if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Outside)
         {
             PositionPlayerAtSpawn(null);
             Debug.LogWarning("Player outside spawn point is not assigned."); // todo if have outside level
         }
 
-
         Debug.Log($"Starting level: {config.DisplayName}");
 
-        spiderSpawner.SpawnSpiders(config); // todo: maybe instead of placing all at once, we can spawn them once they have been collected?
-
-
-        // yield return StartCoroutine(CanvasManager.Instance.HideCanvasAndWait()); // todo! handle ui display / showing and hiding relevant menus, panels, etc.
+        spiderSpawner.SpawnSpiders(config);
+        menuController.HideAll(); // handle ui display / showing and hiding relevant menus, panels, etc.
 
         yield return StartCoroutine(Fade(0f, 0.4f));
     }
 
 
+    private void LoadLevel(int levelIndex)
+    {
+        spiderSpawner.ClearSpiders();
+
+        // Initialize level
+        if (levelIndex < 0 || levelIndex >= activeLevels.Count)
+        {
+            Debug.LogError($"Invalid level index: {levelIndex}");
+            return;
+        }
+
+        currentLevelIndex = levelIndex;
+        caughtSpiders = 0;
+
+        LevelConfig config = CurrentLevel;
+
+        // spawn/move player to spawn point in the loaded scene
+        var isFirstLevelOfEnvironmentKind = activeLevels.FindIndex(l => l.EnvironmentKind == config.EnvironmentKind) == levelIndex;
+        if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Inside)
+        {
+            // For the first level, if it's an inside environment, spawn the player at the inside spawn point.
+            // For later levels, we can consider more complex transitions (e.g., fade out/in, moving the player, etc.)
+            if (playerInsideSpawnPoint != null)
+            {
+                PositionPlayerAtSpawn(playerInsideSpawnPoint);
+            }
+            else
+            {
+                Debug.LogWarning("Player inside spawn point is not assigned.");
+            }
+        }
+        else if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Outside)
+        {
+            PositionPlayerAtSpawn(null);
+            Debug.LogWarning("Player outside spawn point is not assigned."); // todo if have outside level
+        }
+
+        Debug.Log($"Starting level: {config.DisplayName}");
+
+        spiderSpawner.SpawnSpiders(config);
+        menuController.HideAll(); // handle ui display / showing and hiding relevant menus, panels, etc.
+    }
+
+
     private void StartLevel(int levelIndex)
     {
-        StartCoroutine(LoadLevelRoutine(levelIndex));
-        // if (levelIndex < 0 || levelIndex >= activeLevels.Count)
-        // {
-        //     Debug.LogError($"Invalid level index: {levelIndex}");
-        //     return;
-        // }
-
-        // currentLevelIndex = levelIndex;
-        // caughtSpiders = 0;
-
-        // LevelConfig config = CurrentLevel;
-
-        // if (levelIndex == 0 && config.EnvironmentKind == EnvironmentKind.Inside)
-        // {
-        //     // For the first level, if it's an inside environment, spawn the player at the inside spawn point.
-        //     // For later levels, we can consider more complex transitions (e.g., fade out/in, moving the player, etc.)
-        //     if (playerInsideSpawnPoint != null)
-        //     {
-        //         Transform playerTransform = Camera.main.transform; // Assuming the main camera represents the player's position
-        //         playerTransform.position = playerInsideSpawnPoint.position;
-        //         playerTransform.rotation = playerInsideSpawnPoint.rotation;
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning("Player inside spawn point is not assigned.");
-        //     }
-        // }
-
-        // Debug.Log($"Starting level: {config.DisplayName}");
-
-        // spiderSpawner.ClearSpiders();
-        // spiderSpawner.SpawnSpiders(config);
+        StartCoroutine(FadeToBlackAndBack(() => LoadLevel(levelIndex)));
     }
 
     private void PositionPlayerAtSpawn(Transform spawnPoint)
@@ -294,46 +291,26 @@ public class GameManager : MonoBehaviour
         xrRigRoot.position += positionOffset;
 
         Debug.Log($"XR player repositioned to spawn: {spawnPoint.name}");
-
-        // var playerInstance = GameObject.Find("Player") ?? GameObject.FindGameObjectWithTag("Player"); // persistent player
-        // Debug.Log($"found player instance: {(playerInstance != null ? playerInstance.name : "null")}");
-        // Debug.Log($"Positioning player at spawn point: {(spawnPoint != null ? spawnPoint.name : "null")}");
-        // if (playerInstance != null && spawnPoint != null)
-        // {
-        //     playerInstance.transform.position = spawnPoint.position;
-        //     playerInstance.transform.rotation = spawnPoint.rotation;
-        // }
-        // else if (spawnPoint != null)
-        // {
-        //     // spawn fallback: instantiate a player prefab at spawn
-        //     // playerInstance = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-        // }
-
-
-        // // playerInstance.GetComponentInChildren<PlayerStateManager>()?.ResetInventoryForNewLevel();
-
     }
 
-    private void test()
+    private IEnumerator FadeToBlackAndBack(System.Action middleAction = null)
     {
+        if (screenFade == null)
+        {
+            Debug.LogWarning("No OVRScreenFade assigned.");
+            middleAction?.Invoke();
+            yield break;
+        }
 
-        // // look for a GameObject in the loaded scene with tag "PlayerSpawn"
-        // Scene s = SceneManager.GetSceneByName(sceneName);
-        // if (!s.IsValid()) return;
+        screenFade.FadeOut();
 
-        // var roots = s.GetRootGameObjects();
-        // Transform spawn = null;
-        // foreach (var go in roots)
-        // {
-        //     var sp = go.GetComponentInChildren<PlayerSpawn>(true);
-        //     if (sp != null)
-        //     {
-        //         Debug.Log($"[Spawn] Found PlayerSpawn on {sp.gameObject.name}");
-        //         spawn = sp.transform;
-        //         break;
-        //     }
-        // }
+        yield return new WaitForSeconds(1.0f);
 
+        middleAction?.Invoke();
+
+        yield return new WaitForSeconds(0.3f);
+
+        screenFade.FadeIn();
     }
 
     private IEnumerator Fade(float targetAlpha, float duration)
@@ -349,78 +326,4 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-    // private void Start()
-    // {
-    //     StartLevel(0);
-    // }
-
-    // public void StartLevel(int levelIndex)
-    // {
-    //     if (levelIndex < 0 || levelIndex >= levels.Count)
-    //     {
-    //         Debug.LogError($"Invalid level index: {levelIndex}");
-    //         return;
-    //     }
-
-    //     currentLevelIndex = levelIndex;
-    //     caughtSpiders = 0;
-
-    //     LevelConfig config = CurrentLevel;
-
-    //     Debug.Log($"Starting level: {config.DisplayName}");
-
-    //     spiderSpawner.ClearSpiders();
-    //     spiderSpawner.SpawnSpiders(config);
-    // }
-
-    // public void RegisterSpiderCaught(GameObject spider)
-    // {
-    //     caughtSpiders++;
-
-    //     Debug.Log($"Spider caught: {caughtSpiders}/{CurrentLevel.SpidersToCatch}");
-
-    //     Destroy(spider);
-
-    //     if (caughtSpiders >= CurrentLevel.SpidersToCatch)
-    //     {
-    //         CompleteCurrentLevel();
-    //     }
-    //     else
-    //     {
-    //         spiderSpawner.SpawnSingleSpider(CurrentLevel);
-    //     }
-    // }
-
-    // public int GetCurrentScore()
-    // {
-    //     return caughtSpiders;
-    // }
-
-    // private void CompleteCurrentLevel()
-    // {
-    //     Debug.Log($"Level complete: {CurrentLevel.DisplayName}");
-
-    //     spiderSpawner.ClearSpiders();
-
-    //     int nextLevelIndex = currentLevelIndex + 1;
-
-    //     if (nextLevelIndex < levels.Count)
-    //     {
-    //         StartLevel(nextLevelIndex);
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("All levels complete!");
-    //         // todo Later: show final screen / experiment finished UI.
-    //     }
-    // }
-
-    // public void ActivatePanicMode()
-    // {
-    //     Debug.Log("Panic mode activated");
-
-    //     spiderSpawner.ClearSpiders();
-
-    //     // todo Later: show calm UI, pause panel, return-to-menu button, etc.
-    // }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameMenuController : MonoBehaviour
 {
+    [Header("Canvas Panel References")]
     [SerializeField] private GameObject introPanel;
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject customLevelPanel;
@@ -9,14 +10,18 @@ public class GameMenuController : MonoBehaviour
     [SerializeField] private GameObject endPanel;
     [SerializeField] private GameObject panicPanel;
 
+    [Header("Canvas Placement References")]
+    [SerializeField] private GameMenuRepositionCanvas repositionCanvas;
+
     private void Start()
     {
+        repositionCanvas = FindFirstObjectByType<GameMenuRepositionCanvas>();
         ShowIntro();
     }
 
     public void ShowIntro()
     {
-        ShowOnly(introPanel);
+        ShowOnly(introPanel, placeInFrontOfPlayer: false);
     }
 
     public void ShowMainMenu()
@@ -26,7 +31,7 @@ public class GameMenuController : MonoBehaviour
 
     public void ShowCustomLevelMenu()
     {
-        ShowOnly(customLevelPanel);
+        ShowOnly(customLevelPanel, placeInFrontOfPlayer: false);
     }
 
     public void ShowLevelComplete()
@@ -54,7 +59,7 @@ public class GameMenuController : MonoBehaviour
         panicPanel.SetActive(false);
     }
 
-    private void ShowOnly(GameObject panel)
+    private void ShowOnly(GameObject panel, bool placeInFrontOfPlayer = true)
     {
         HideAll();
 
@@ -62,6 +67,11 @@ public class GameMenuController : MonoBehaviour
         if (panel != null)
         {
             panel.SetActive(true);
+        }
+
+        if (placeInFrontOfPlayer)
+        {
+            repositionCanvas.PlaceInFrontOfPlayer();
         }
     }
 }

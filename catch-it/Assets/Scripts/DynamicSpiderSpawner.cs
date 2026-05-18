@@ -133,7 +133,9 @@ public class DynamicSpiderSpawner : MonoBehaviour
                     Random.Range(-0.3f, 0.3f)
                 );
 
-                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                Quaternion randomTwist = Quaternion.AngleAxis(Random.Range(0f, 360f), hit.normal);
+                Quaternion rotation = randomTwist * surfaceRotation;
 
                 return Instantiate(prefab, hit.point + randomOffset, rotation);
             }
@@ -141,7 +143,13 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
         Debug.LogWarning("No raycast hit for spawn point: " + spawnPoint.name);
 
-        return Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        Quaternion fallbackRotation = Quaternion.Euler(
+            spawnPoint.eulerAngles.x,
+            Random.Range(0f, 360f),
+            spawnPoint.eulerAngles.z
+        );
+
+        return Instantiate(prefab, spawnPoint.position, fallbackRotation);
     }
 
     private void ApplyLevelConfigToSpider(GameObject spider, LevelConfig config)
