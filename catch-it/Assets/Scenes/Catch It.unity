@@ -4921,7 +4921,7 @@ Transform:
   m_GameObject: {fileID: 239896603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9999838, z: -0, w: -0.0056894794}
-  m_LocalPosition: {x: -0.288, y: 1.6, z: -25.245}
+  m_LocalPosition: {x: -3.06, y: 0.34, z: -11.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19469,6 +19469,10 @@ PrefabInstance:
       propertyPath: _centerEyeCamera
       value: 
       objectReference: {fileID: 25756304}
+    - target: {fileID: 3903482225804038116, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4148778239110795873, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
       propertyPath: m_Name
       value: '[BuildingBlock] OVRInteractionComprehensive'
@@ -26030,8 +26034,11 @@ MonoBehaviour:
     spawnPointContainer: {fileID: 1069237896}
     PanicModeBehavior: 0
   menuController: {fileID: 1309849403}
+  fadeImage: {fileID: 1441630326}
   spiderSpawner: {fileID: 510291677}
   playerInsideSpawnPoint: {fileID: 239896604}
+  xrRigRoot: {fileID: 1554442153}
+  centerEyeAnchor: {fileID: 25756303}
 --- !u!1001 &1313177786
 PrefabInstance:
   m_ObjectHideFlags: 0
