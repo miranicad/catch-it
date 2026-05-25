@@ -37,9 +37,11 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 0
-    m_path: Assets/Scenes/Level 1.unity
+    m_path: Assets/Scenes/Testing Levels/Level 1.unity
+  - m_enabled: 0
+    m_path: Assets/Scenes/Testing Levels/Level 0.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Level 0.unity
+    m_path: Assets/Scenes/Catch It.unity
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
