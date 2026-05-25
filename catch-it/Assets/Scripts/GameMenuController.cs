@@ -21,7 +21,7 @@ public class GameMenuController : MonoBehaviour
 
     public void ShowIntro()
     {
-        ShowOnly(introPanel, placeInFrontOfPlayer: false);
+        ShowOnly(introPanel, placeInFrontOfPlayer: true);
     }
 
     public void ShowMainMenu()
