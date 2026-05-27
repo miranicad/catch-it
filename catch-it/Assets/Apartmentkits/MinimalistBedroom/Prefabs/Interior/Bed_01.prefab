@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 4734737591080576}
   - component: {fileID: 33363194380404308}
   - component: {fileID: 23866374106033910}
+  - component: {fileID: 2069535480361157687}
   m_Layer: 0
   m_Name: Headboard_01
   m_TagString: Untagged
@@ -125,6 +126,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2069535480361157687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094725224092158}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23514256, y: 1.4249787, z: 2.6}
+  m_Center: {x: 0.00000008940697, y: 0.00000005960465, z: 0.000000059604645}
 --- !u!1 &1215164944969178
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +360,7 @@ GameObject:
   - component: {fileID: 4768695873500698}
   - component: {fileID: 33160669224964712}
   - component: {fileID: 23289554557398986}
+  - component: {fileID: 2823496168914236005}
   m_Layer: 0
   m_Name: BedBase_01
   m_TagString: Untagged
@@ -417,3 +440,24 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2823496168914236005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634779436782824}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0000014, y: 0.34422868, z: 1.8000009}
+  m_Center: {x: 0.000000059604645, y: 0.00000045448542, z: 1.4210855e-14}
