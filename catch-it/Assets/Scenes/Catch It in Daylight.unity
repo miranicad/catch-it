@@ -3408,7 +3408,7 @@ TerrainCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
   m_TerrainData: {fileID: 15600000, guid: 8e061a62867437b4a9069568c17650c8, type: 2}
@@ -3773,7 +3773,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You successfully interacted with all spider in this level.
+  m_text: 'You successfully interacted with all spiders in this level.
 
 
     Take
@@ -10864,6 +10864,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -180.00002
       objectReference: {fileID: 0}
+    - target: {fileID: 3157564884180093967, guid: 5d1aa2f91b1be464288a6db963f5d908, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14714,7 +14718,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 217498811}
-  - {fileID: 1661016418}
   - {fileID: 849556867}
   - {fileID: 773797912}
   - {fileID: 37639346}
@@ -26524,9 +26527,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   predefinedLevels:
-  - LevelId: level_01_cartoon_safe
-    DisplayName: Level 1 - Friendly Spiders
-    Description: Small cartoon spiders in a safe indoor environment
+  - LevelId: level_01_cartoon_static
+    DisplayName: Level 1
+    Description: Multiple small, static cartoon spiders in a safe indoor environment
     EnvironmentKind: 1
     SpiderVisualKind: 1
     SpiderSizeKind: 0
@@ -26535,9 +26538,10 @@ MonoBehaviour:
     MaxActiveSpiders: 1
     spawnPointContainer: {fileID: 212881377}
     PanicModeBehavior: 0
-  - LevelId: level_02_realistic_controlled
-    DisplayName: Level 2 - More Realistic Spiders
-    Description: More realistic spiders, still predictable and controlled
+  - LevelId: level_02_fantasy_larger
+    DisplayName: Level 2
+    Description: Larger but more abstract spiders, still predictable and controlled,
+      little in-place movement
     EnvironmentKind: 1
     SpiderVisualKind: 1
     SpiderSizeKind: 0
@@ -26546,9 +26550,10 @@ MonoBehaviour:
     MaxActiveSpiders: 1
     spawnPointContainer: {fileID: 1069237896}
     PanicModeBehavior: 0
-  - LevelId: level_03_realistic_controlled
-    DisplayName: Level 3 - More Realistic Spiders
-    Description: 
+  - LevelId: level_03_realistic_cute
+    DisplayName: Level 3
+    Description: More realistic spiders, still cute rather than scary and white rather
+      than typical spider colors.
     EnvironmentKind: 1
     SpiderVisualKind: 1
     SpiderSizeKind: 0
@@ -26557,9 +26562,9 @@ MonoBehaviour:
     MaxActiveSpiders: 1
     spawnPointContainer: {fileID: 1069237896}
     PanicModeBehavior: 0
-  - LevelId: level_04_realistic_controlled
-    DisplayName: Level 4 - Most Realistic Spiders
-    Description: 
+  - LevelId: level_04_realistic_scary
+    DisplayName: Level 4
+    Description: Most realistic spider, tarantula. Will eventually walk after prototype.
     EnvironmentKind: 1
     SpiderVisualKind: 2
     SpiderSizeKind: 0
@@ -34366,71 +34371,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 433348273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1661016417
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1661016418}
-  - component: {fileID: 1661016419}
-  m_Layer: 0
-  m_Name: ReflectionProbe (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1661016418
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661016417}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.46591, y: 0, z: -13.58991}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802167687}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!215 &1661016419
-ReflectionProbe:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661016417}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Type: 0
-  m_Mode: 0
-  m_RefreshMode: 0
-  m_TimeSlicingMode: 0
-  m_Resolution: 2048
-  m_UpdateFrequency: 0
-  m_BoxSize: {x: 8.5, y: 5, z: 8}
-  m_BoxOffset: {x: 0, y: 0, z: 0}
-  m_NearClip: 0.3
-  m_FarClip: 1000
-  m_ShadowDistance: 100
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IntensityMultiplier: 1.63
-  m_BlendDistance: 1
-  m_HDR: 1
-  m_BoxProjection: 1
-  m_RenderDynamicObjects: 0
-  m_UseOcclusionCulling: 1
-  m_Importance: 1
-  m_CustomBakedTexture: {fileID: 0}
 --- !u!1001 &1661304399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36637,7 +36577,7 @@ Transform:
   m_GameObject: {fileID: 1781710840}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.906, y: -1.479, z: -12.99}
+  m_LocalPosition: {x: 1.505, y: -1.479, z: -12.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
