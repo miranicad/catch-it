@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 4971595403458025342}
   - component: {fileID: 4722506082989537326}
   - component: {fileID: 8808237114880101317}
+  - component: {fileID: 9132394831332977794}
   m_Layer: 0
   m_Name: little_spider
   m_TagString: Spider
@@ -108,7 +109,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.2742056
   m_Height: 1
@@ -153,6 +154,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &9132394831332977794
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258765008858621849}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.50329113, y: 0.31504202, z: 0.5720749}
+  m_Center: {x: 0.0013871193, y: 0.16629314, z: 0.08364487}
 --- !u!1 &261870567832909615
 GameObject:
   m_ObjectHideFlags: 0

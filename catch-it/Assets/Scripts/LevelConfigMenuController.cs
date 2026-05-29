@@ -7,112 +7,95 @@ public class LevelConfigMenuController : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameManager gameManager;
 
-    [Header("Spawn Containers")]
-    [SerializeField] private Transform insideSpawnPointContainer;
-    [SerializeField] private Transform outsideSpawnPointContainer;
-
-    [Header("Environment UI")]
-    [SerializeField] private TMP_Dropdown environmentDropdown;
-
-    [Header("Spider Visual UI")]
-    [SerializeField] private TMP_Dropdown spiderVisualDropdown;
-
-    [Header("Spider Size UI")]
-    [SerializeField] private TMP_Dropdown spiderSizeDropdown;
-
-    [Header("Spider Movement UI")]
-    [SerializeField] private TMP_Dropdown spiderMovementDropdown;
-
     [Header("Count UI")]
     [SerializeField] private Slider spidersToCatchSlider;
     [SerializeField] private TMP_Text spidersToCatchValueText;
 
-    [SerializeField] private Slider maxActiveSpidersSlider;
-    [SerializeField] private TMP_Text maxActiveSpidersValueText;
+    [Header("Selection Summary")]
+    [SerializeField] private TMP_Text selectionSummaryText;
 
-    [Header("Panic Mode UI")]
-    [SerializeField] private TMP_Dropdown panicBehaviorDropdown;
-
-    private void Start()
+    static LevelConfig defaultConfig = new LevelConfig
     {
-        RefreshValueLabels();
+        EnvironmentKind = EnvironmentKind.Inside,
+        SpiderVisualKind = SpiderVisualKind.Cartoon,
+        SpiderSizeKind = SpiderSizeKind.Small,
+        SpiderMovementKind = SpiderMovementKind.Static,
+        SpidersToCatch = 3,
+        MaxActiveSpiders = 1,
+        PanicModeBehavior = PanicModeBehavior.HideSpiders
+    };
+
+    private string selectedSpiderKindOption = "";
+
+    public void OnSelectCartoonSpiderKind()
+    {
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Fantasy;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
+        selectedSpiderKindOption = "Cartoon";
+        UpdateSelectionSummary();
     }
 
-    public void OnSpidersToCatchChanged(float value)
+    public void OnSelectMixedSpiderKind()
     {
-        RefreshValueLabels();
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Cartoon;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Static;
+        selectedSpiderKindOption = "Mixed";
+        UpdateSelectionSummary();
     }
 
-    public void OnMaxActiveSpidersChanged(float value)
+    public void OnSelectRealisticSpiderKind()
     {
-        RefreshValueLabels();
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Realistic;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
+        selectedSpiderKindOption = "Realistic";
+        UpdateSelectionSummary();
     }
 
-    private void RefreshValueLabels()
+    public void OnSpidersToCatchChanged()
     {
-        if (spidersToCatchValueText != null)
-        {
-            spidersToCatchValueText.text = Mathf.RoundToInt(spidersToCatchSlider.value).ToString();
-        }
-
-        if (maxActiveSpidersValueText != null)
-        {
-            maxActiveSpidersValueText.text = Mathf.RoundToInt(maxActiveSpidersSlider.value).ToString();
-        }
+        var value = (int)spidersToCatchSlider.value;
+        spidersToCatchValueText.text = value.ToString();
+        OnChangeNumberOfSpidersToCatch(value);
+        UpdateSelectionSummary();
     }
 
     public void StartCustomLevelFromMenu()
     {
-        LevelConfig config = BuildLevelConfigFromUi();
+        LevelConfig config = BuildLevelConfigFromSelected();
+
+        Debug.Log($"Starting custom level with config: {config.DisplayName}, SpidersToCatch: {config.SpidersToCatch}, VisualKind: {config.SpiderVisualKind}, MovementKind: {config.SpiderMovementKind}");
 
         gameManager.StartCustomLevel(config);
     }
 
-    private LevelConfig BuildLevelConfigFromUi()
+    private void OnChangeNumberOfSpidersToCatch(int value)
     {
-        EnvironmentKind environmentKind = (EnvironmentKind)environmentDropdown.value;
-        SpiderVisualKind visualKind = (SpiderVisualKind)spiderVisualDropdown.value;
-        SpiderSizeKind sizeKind = (SpiderSizeKind)spiderSizeDropdown.value;
-        SpiderMovementKind movementKind = (SpiderMovementKind)spiderMovementDropdown.value;
-        PanicModeBehavior panicBehavior = (PanicModeBehavior)panicBehaviorDropdown.value;
+        defaultConfig.SpidersToCatch = value;
+        defaultConfig.MaxActiveSpiders = 1; // Mathf.Min(defaultConfig.MaxActiveSpiders, value);
+    }
 
-        int spidersToCatch = Mathf.RoundToInt(spidersToCatchSlider.value);
-        int maxActiveSpiders = Mathf.RoundToInt(maxActiveSpidersSlider.value);
+    private void UpdateSelectionSummary()
+    {
+        selectionSummaryText.text = $"Selected Configuration:\nCatch {defaultConfig.SpidersToCatch} spiders, as {selectedSpiderKindOption} kind, with {defaultConfig.SpiderMovementKind} movement";
+    }
 
-        maxActiveSpiders = Mathf.Clamp(maxActiveSpiders, 1, spidersToCatch);
-
-        Transform spawnContainer = GetSpawnContainer(environmentKind);
-
+    private LevelConfig BuildLevelConfigFromSelected()
+    {
         return new LevelConfig
         {
             LevelId = "custom_runtime_level",
-            DisplayName = "Custom Level",
+            DisplayName = "Custom Level - " + selectedSpiderKindOption,
             Description = "Custom level created from menu inputs.",
 
-            EnvironmentKind = environmentKind,
-            SpiderVisualKind = visualKind,
-            SpiderSizeKind = sizeKind,
-            SpiderMovementKind = movementKind,
+            EnvironmentKind = EnvironmentKind.Inside,
+            SpiderVisualKind = defaultConfig.SpiderVisualKind,
+            SpiderSizeKind = defaultConfig.SpiderSizeKind,
+            SpiderMovementKind = defaultConfig.SpiderMovementKind,
 
-            SpidersToCatch = spidersToCatch,
-            MaxActiveSpiders = maxActiveSpiders,
+            SpidersToCatch = defaultConfig.SpidersToCatch,
+            MaxActiveSpiders = defaultConfig.MaxActiveSpiders,
 
-            spawnPointContainer = spawnContainer,
-
-            PanicModeBehavior = panicBehavior
+            PanicModeBehavior = PanicModeBehavior.HideSpiders
         };
-    }
-
-    private Transform GetSpawnContainer(EnvironmentKind environmentKind)
-    {
-        switch (environmentKind)
-        {
-            case EnvironmentKind.Outside:
-                return outsideSpawnPointContainer;
-
-            case EnvironmentKind.Inside:
-            default:
-                return insideSpawnPointContainer;
-        }
     }
 }

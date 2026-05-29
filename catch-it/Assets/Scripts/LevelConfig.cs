@@ -22,9 +22,6 @@ public class LevelConfig
     [Min(1)]
     public int MaxActiveSpiders = 1;
 
-    [Header("Spawn Configuration")]
-    public Transform spawnPointContainer; // optional, will be null if custom level created from menu; TODO! remove eventually! is now handled in DynamicSpiderSpawner by checking config first, then falling back to inspector assigned containers
-
     [Header("Panic Mode Settings")]
     public PanicModeBehavior PanicModeBehavior = PanicModeBehavior.HideSpiders;
 }
@@ -38,8 +35,10 @@ public enum EnvironmentKind
 public enum SpiderVisualKind
 {
     None,
-    Cartoon, // todo! idea: make it funky colors as well instead of black? because black is already pretttty realtic tbh
-    Realistic
+    Fantasy,
+    Cartoon,
+    Realistic,
+    Scary
 }
 
 public enum SpiderSizeKind
@@ -57,4 +56,17 @@ public enum PanicModeBehavior
 {
     HideSpiders,
     ReturnToMenu
+}
+
+[Serializable]
+public class SpiderPrefabInfo
+{
+    public GameObject Prefab;
+    public SpiderVisualKind VisualKind;
+
+    public SpiderPrefabInfo(GameObject prefab, SpiderVisualKind visualKind)
+    {
+        Prefab = prefab;
+        VisualKind = visualKind;
+    }
 }

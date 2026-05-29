@@ -5,25 +5,17 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    // Ideas for Minimum implementation that still looks good:
-    // Main menu: “Start”
-    // Level 1 starts in inside environment
-    // User catches 3 cartoon/small spiders
-    // Completion panel: “Level complete — Continue”
-    // Level 2 starts in same environment
-    // User catches 5 realistic/small spiders
-    // Panic button is demonstrated
-    // Optional Level 3 if stable
-    // End screen: “Thank you / Experiment complete”
-
     [Header("Level Configuration")]
     [SerializeField] private List<LevelConfig> predefinedLevels = new();
+
+    [Header("Audio Settings")]
+    public AudioClip BackgroundMusicInside; // todo! implement or remove
+    public AudioClip BackgroundMusicOutside;
 
     [Header("References")]
     [SerializeField] private GameMenuController menuController;
 
     [SerializeField] private OVRScreenFade screenFade;
-    public Image fadeImage; // full-screen image for fading
 
     [Header("Scene References")]
     [SerializeField] private DynamicSpiderSpawner spiderSpawner;
@@ -70,6 +62,12 @@ public class GameManager : MonoBehaviour
         }
 
         StartLevel(0);
+    }
+
+    public void ConfigureCustomLevel()
+    {
+        menuController.ShowCustomLevelMenu();
+        Debug.Log("Waiting for player to configure the level.");
     }
 
     public void StartCustomLevel(LevelConfig customConfig)
@@ -173,55 +171,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator LoadLevelRoutine(int levelIndex)
-    {
-        yield return StartCoroutine(Fade(1f, 0.4f));
-
-        spiderSpawner.ClearSpiders();
-
-        // Initialize level
-        if (levelIndex < 0 || levelIndex >= activeLevels.Count)
-        {
-            Debug.LogError($"Invalid level index: {levelIndex}");
-            yield break;
-        }
-
-        currentLevelIndex = levelIndex;
-        caughtSpiders = 0;
-
-        LevelConfig config = CurrentLevel;
-
-        // spawn/move player to spawn point in the loaded scene
-        yield return null; // let Unity finish activation
-        var isFirstLevelOfEnvironmentKind = activeLevels.FindIndex(l => l.EnvironmentKind == config.EnvironmentKind) == levelIndex;
-        if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Inside)
-        {
-            // For the first level, if it's an inside environment, spawn the player at the inside spawn point.
-            // For later levels, we can consider more complex transitions (e.g., fade out/in, moving the player, etc.)
-            if (playerInsideSpawnPoint != null)
-            {
-                PositionPlayerAtSpawn(playerInsideSpawnPoint);
-            }
-            else
-            {
-                Debug.LogWarning("Player inside spawn point is not assigned.");
-            }
-        }
-        else if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Outside)
-        {
-            PositionPlayerAtSpawn(null);
-            Debug.LogWarning("Player outside spawn point is not assigned."); // todo if have outside level
-        }
-
-        Debug.Log($"Starting level: {config.DisplayName}");
-
-        spiderSpawner.SpawnSpiders(config);
-        menuController.HideAll(); // handle ui display / showing and hiding relevant menus, panels, etc.
-
-        yield return StartCoroutine(Fade(0f, 0.4f));
-    }
-
-
     private void LoadLevel(int levelIndex)
     {
         spiderSpawner.ClearSpiders();
@@ -311,19 +260,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         screenFade.FadeIn();
-    }
-
-    private IEnumerator Fade(float targetAlpha, float duration)
-    {
-        if (fadeImage == null) yield break;
-        float start = fadeImage.color.a;
-        float t = 0f;
-        while (t < duration)
-        {
-            t += Time.unscaledDeltaTime;
-            float a = Mathf.Lerp(start, targetAlpha, t / duration);
-            var c = fadeImage.color; c.a = a; fadeImage.color = c;
-            yield return null;
-        }
     }
 }

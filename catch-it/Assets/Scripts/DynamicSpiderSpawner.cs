@@ -9,12 +9,16 @@ public class DynamicSpiderSpawner : MonoBehaviour
     public GameObject spiderPrefabCartoonWalking;
     public GameObject spiderPrefabCartoonIdle;
     public GameObject spiderPrefabRealistic;
+    [SerializeField] private List<SpiderPrefabInfo> spiderPrefabByKind;
 
     [Header("Spawn Points")]
     public Transform spawnPointsInsideContainer;
     public Transform spawnPointsOutsideContainer;
 
+    private ILookup<SpiderVisualKind, GameObject> prefabLookup => spiderPrefabByKind.ToLookup(entry => entry.VisualKind, entry => entry.Prefab);
+
     private readonly List<GameObject> spawnedSpiders = new();
+    private Transform lastUsedSpawnPoint = null;
 
     public void SpawnSpiders(LevelConfig config)
     {
@@ -30,22 +34,9 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
     public void SpawnSingleSpider(LevelConfig config)
     {
-        Transform[] pointsToUse;
-
         // Get spawn points from environment specific container
         Transform containerToUse = config.EnvironmentKind == EnvironmentKind.Inside ? spawnPointsInsideContainer : spawnPointsOutsideContainer;
-        if (containerToUse == null && config.spawnPointContainer != null)
-        {
-            // Get all child transforms of the container (excluding the container itself)
-            pointsToUse = config.spawnPointContainer
-                .GetComponentsInChildren<Transform>()
-                .Where(t => t != config.spawnPointContainer)
-                .ToArray();
-        }
-        else
-        {
-            pointsToUse = containerToUse.GetComponentsInChildren<Transform>().Where(t => t != containerToUse).ToArray();
-        }
+        Transform[] pointsToUse = containerToUse.GetComponentsInChildren<Transform>().Where(t => t != containerToUse).ToArray();
 
         if (pointsToUse == null || pointsToUse.Length == 0)
         {
@@ -61,13 +52,14 @@ public class DynamicSpiderSpawner : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = pointsToUse[Random.Range(0, pointsToUse.Length)];
+        Transform spawnPoint = pointsToUse.Except(new[] { lastUsedSpawnPoint }).ToArray()[Random.Range(0, pointsToUse.Length - (lastUsedSpawnPoint ? 1 : 0))];
 
         GameObject spider = SpawnAtSurfaceOrFallback(prefab, spawnPoint);
 
         ApplyLevelConfigToSpider(spider, config);
 
         spawnedSpiders.Add(spider);
+        lastUsedSpawnPoint = spawnPoint;
     }
 
     public void ClearSpiders()
@@ -85,8 +77,15 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
     private GameObject GetSpiderPrefab(LevelConfig config)
     {
+        if (prefabLookup.Contains(config.SpiderVisualKind))
+        {
+            return prefabLookup[config.SpiderVisualKind].FirstOrDefault();
+        }
+
         switch (config.SpiderVisualKind)
         {
+            case SpiderVisualKind.None:
+                return null;
             case SpiderVisualKind.Cartoon:
                 switch (config.SpiderMovementKind)
                 {
@@ -99,6 +98,9 @@ public class DynamicSpiderSpawner : MonoBehaviour
                     default:
                         return spiderPrefabCartoonStatic;
                 }
+
+            case SpiderVisualKind.Scary:
+                return spiderPrefabRealistic;
 
             case SpiderVisualKind.Realistic:
                 return spiderPrefabRealistic;
