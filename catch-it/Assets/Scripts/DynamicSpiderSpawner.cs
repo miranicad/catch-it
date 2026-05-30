@@ -75,6 +75,17 @@ public class DynamicSpiderSpawner : MonoBehaviour
         spawnedSpiders.Clear();
     }
 
+    public void SetSpidersActive(bool active)
+    {
+        foreach (GameObject spider in spawnedSpiders)
+        {
+            if (spider != null)
+            {
+                spider.SetActive(active);
+            }
+        }
+    }
+
     private GameObject GetSpiderPrefab(LevelConfig config)
     {
         if (prefabLookup.Contains(config.SpiderVisualKind))

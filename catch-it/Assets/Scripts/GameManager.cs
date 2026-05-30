@@ -9,11 +9,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<LevelConfig> predefinedLevels = new();
 
     [Header("Audio Settings")]
-    public AudioClip BackgroundMusicInside; // todo! implement or remove
-    public AudioClip BackgroundMusicOutside;
+    public AudioSource BackgroundMusicInside; // todo! implement or remove
+    public AudioSource BackgroundMusicOutside;
 
     [Header("References")]
     [SerializeField] private GameMenuController menuController;
+    [SerializeField] private PanicModeManager panicModeManager;
 
     [SerializeField] private OVRScreenFade screenFade;
 
@@ -138,18 +139,95 @@ public class GameManager : MonoBehaviour
         switch (CurrentLevel.PanicModeBehavior)
         {
             case PanicModeBehavior.HideSpiders:
-                // Show calm/pause UI.
+                spiderSpawner.SetSpidersActive(false);
                 break;
 
-            case PanicModeBehavior.ReturnToMenu:
-                // Show menu UI.
+            case PanicModeBehavior.TransformSpidersHarmlessly:
+                // todo later: replace spiders with non-threatening visuals instead of just hiding them. This way the player can still see where the spiders are, but they won't be scary.
                 break;
         }
     }
 
+    // todo! verify panic mode manager functionality with tamira to finalize how both these should work together because manual trigger as commented-out below does NOT work (endless loop of increasing timer / calling update method)
+    // public void ActivatePanicMode(bool fromMenu = false)
+    // {
+    //     if (fromMenu)
+    //     {
+    //         Debug.Log("Panic mode triggered from menu.");
+    //     }
+
+    //     menuController.ShowPanicPanel(); // todo! maybe this one is already enough??
+
+    //     // todo later: move player to panic mode safe location instead of only hiding or transforming spiders?
+    //     Debug.Log("Panic mode activated.");
+
+    //     AudioSource musicPlaying = CurrentLevel != null && CurrentLevel.EnvironmentKind == EnvironmentKind.Inside ? BackgroundMusicInside : BackgroundMusicOutside;
+    //     if (musicPlaying != null)
+    //     {
+    //         musicPlaying.Stop();
+    //     }
+
+    //     // if (panicModeManager == null)
+    //     // {
+    //     //     Debug.LogWarning("PanicModeManager reference is not assigned.");
+    //     // }
+    //     // else
+    //     // {
+    //     //     panicModeManager.TriggerPanicMode(fromMenu);
+    //     // }
+
+    //     if (CurrentLevel == null)
+    //     {
+    //         return;
+    //     }
+
+    //     switch (CurrentLevel.PanicModeBehavior)
+    //     {
+    //         case PanicModeBehavior.HideSpiders:
+    //             spiderSpawner.SetSpidersActive(false);
+    //             break;
+
+    //         case PanicModeBehavior.TransformSpidersHarmlessly:
+    //             // todo later: replace spiders with non-threatening visuals instead of just hiding them. This way the player can still see where the spiders are, but they won't be scary.
+    //             break;
+    //     }
+    // }
+
+    // public void DeactivatePanicMode()
+    // {
+    //     menuController.HideAll();
+
+    //     Debug.Log("Panic mode deactivated.");
+
+    //     if (panicModeManager == null)
+    //     {
+    //         Debug.LogWarning("PanicModeManager reference is not assigned.");
+    //     }
+    //     else
+    //     {
+    //         panicModeManager.ResumeGame();
+    //     }
+
+    //     if (CurrentLevel == null)
+    //     {
+    //         menuController.ShowMainMenu();
+    //         return;
+    //     }
+
+    //     switch (CurrentLevel.PanicModeBehavior)
+    //     {
+    //         case PanicModeBehavior.HideSpiders:
+    //             spiderSpawner.SetSpidersActive(true);
+    //             break;
+
+    //         case PanicModeBehavior.TransformSpidersHarmlessly:
+    //             // todo later: replace non-threatening replacements with spiders again.
+    //             break;
+    //     }
+    // }
+
     private void CompleteCurrentLevel()
     {
-        // todo Later: show final screen / experiment finished UI.
         Debug.Log($"Level complete: {CurrentLevel.DisplayName}");
 
         spiderSpawner.ClearSpiders();
@@ -160,7 +238,6 @@ public class GameManager : MonoBehaviour
         {
             menuController.ShowLevelComplete();
             Debug.Log("Waiting for player to decide what's next.");
-            // StartLevel(nextLevelIndex);
         }
         else
         {
@@ -201,11 +278,17 @@ public class GameManager : MonoBehaviour
             {
                 Debug.LogWarning("Player inside spawn point is not assigned.");
             }
+
+            BackgroundMusicInside?.Play();
+            BackgroundMusicOutside?.Stop();
         }
         else if (isFirstLevelOfEnvironmentKind && config.EnvironmentKind == EnvironmentKind.Outside)
         {
             PositionPlayerAtSpawn(null);
             Debug.LogWarning("Player outside spawn point is not assigned."); // todo if have outside level
+
+            BackgroundMusicOutside?.Play();
+            BackgroundMusicInside?.Stop();
         }
 
         Debug.Log($"Starting level: {config.DisplayName}");

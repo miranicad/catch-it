@@ -55,7 +55,7 @@ public enum SpiderMovementKind
 public enum PanicModeBehavior
 {
     HideSpiders,
-    ReturnToMenu
+    TransformSpidersHarmlessly // instead of hiding, change the spiders to a non-threatening visual
 }
 
 [Serializable]

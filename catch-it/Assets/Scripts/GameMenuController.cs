@@ -59,6 +59,12 @@ public class GameMenuController : MonoBehaviour
         panicPanel.SetActive(false);
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Quitting game.");
+        Application.Quit();
+    }
+
     private void ShowOnly(GameObject panel, bool placeInFrontOfPlayer = true)
     {
         HideAll();
