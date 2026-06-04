@@ -175,7 +175,7 @@ public class DynamicSpiderSpawner : MonoBehaviour
 
         if (config.SpiderMovementKind != SpiderMovementKind.Static)
         {
-            // todo: add movement
+            // todo in future feature: add movement by activating the corresponding animation controllers and/or movement scripts
         }
     }
 }

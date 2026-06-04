@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,42 +21,41 @@ public class LevelConfigMenuController : MonoBehaviour
         SpiderVisualKind = SpiderVisualKind.Cartoon,
         SpiderSizeKind = SpiderSizeKind.Small,
         SpiderMovementKind = SpiderMovementKind.Static,
-        SpidersToCatch = 3,
+        SpidersToCatch = 2,
         MaxActiveSpiders = 1,
         PanicModeBehavior = PanicModeBehavior.HideSpiders
     };
 
     private string selectedSpiderKindOption = "";
 
-    public void OnSelectCartoonSpiderKind()
+    public void OnSelectSpiderKind(int spiderVisualKindValue)
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Fantasy;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
-        selectedSpiderKindOption = "Cartoon";
+        SpiderVisualKind spiderVisualKind = (SpiderVisualKind)spiderVisualKindValue;
+        defaultConfig.SpiderVisualKind = spiderVisualKind;
+        defaultConfig.SpiderMovementKind = spiderVisualKind == SpiderVisualKind.Cartoon ? SpiderMovementKind.Static : SpiderMovementKind.Idle;
+        selectedSpiderKindOption = spiderVisualKind.ToString();
         UpdateSelectionSummary();
     }
 
-    public void OnSelectMixedSpiderKind()
+    public void OnMakeSpidersLargerChanged(bool isOn)
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Cartoon;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Static;
-        selectedSpiderKindOption = "Mixed";
+        defaultConfig.SpiderSizeKind = isOn ? SpiderSizeKind.Large : SpiderSizeKind.Small;
         UpdateSelectionSummary();
     }
 
-    public void OnSelectRealisticSpiderKind()
+    public void OnMaxOneActiveSpiderChanged(bool isOn)
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Realistic;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
-        selectedSpiderKindOption = "Realistic";
+        defaultConfig.MaxActiveSpiders = isOn ? 1 : defaultConfig.SpidersToCatch;
         UpdateSelectionSummary();
     }
 
-    public void OnSpidersToCatchChanged()
+    public void OnSpidersToCatchChanged(float value)
     {
-        var value = (int)spidersToCatchSlider.value;
-        spidersToCatchValueText.text = value.ToString();
-        OnChangeNumberOfSpidersToCatch(value);
+        int intValue = (int)value;
+
+        defaultConfig.MaxActiveSpiders = Mathf.Min(defaultConfig.MaxActiveSpiders, intValue); // if was larger than new value, reduce to match new value
+        defaultConfig.SpidersToCatch = intValue;
+
         UpdateSelectionSummary();
     }
 
@@ -76,7 +76,7 @@ public class LevelConfigMenuController : MonoBehaviour
 
     private void UpdateSelectionSummary()
     {
-        selectionSummaryText.text = $"Selected Configuration:\nCatch {defaultConfig.SpidersToCatch} spiders, as {selectedSpiderKindOption} kind, with {defaultConfig.SpiderMovementKind} movement";
+        selectionSummaryText.text = $"Selected Configuration:\n {defaultConfig.SpidersToCatch} spiders, as {selectedSpiderKindOption} kind";
     }
 
     private LevelConfig BuildLevelConfigFromSelected()
@@ -97,5 +97,41 @@ public class LevelConfigMenuController : MonoBehaviour
 
             PanicModeBehavior = PanicModeBehavior.HideSpiders
         };
+    }
+
+    [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
+    public void OnSelectCartoonSpiderKind()
+    {
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Fantasy;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
+        selectedSpiderKindOption = "Cartoon";
+        UpdateSelectionSummary();
+    }
+
+    [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
+    public void OnSelectMixedSpiderKind()
+    {
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Cartoon;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Static;
+        selectedSpiderKindOption = "Mixed";
+        UpdateSelectionSummary();
+    }
+
+    [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
+    public void OnSelectRealisticSpiderKind()
+    {
+        defaultConfig.SpiderVisualKind = SpiderVisualKind.Realistic;
+        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
+        selectedSpiderKindOption = "Realistic";
+        UpdateSelectionSummary();
+    }
+
+    [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
+    public void OnSpidersToCatchChanged()
+    {
+        var value = (int)spidersToCatchSlider.value;
+        spidersToCatchValueText.text = value.ToString();
+        OnChangeNumberOfSpidersToCatch(value);
+        UpdateSelectionSummary();
     }
 }
