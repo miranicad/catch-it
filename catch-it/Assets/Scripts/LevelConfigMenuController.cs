@@ -26,26 +26,33 @@ public class LevelConfigMenuController : MonoBehaviour
         PanicModeBehavior = PanicModeBehavior.HideSpiders
     };
 
-    private string selectedSpiderKindOption = "";
+    LevelConfig currentConfig = defaultConfig.Clone();
+    static LevelConfig lastSelectedConfig;
+
+    void OnEnable()
+    {
+        currentConfig = lastSelectedConfig?.Clone() ?? defaultConfig.Clone();
+        spidersToCatchSlider.value = currentConfig.SpidersToCatch;
+        UpdateSelectionSummary();
+    }
 
     public void OnSelectSpiderKind(int spiderVisualKindValue)
     {
         SpiderVisualKind spiderVisualKind = (SpiderVisualKind)spiderVisualKindValue;
-        defaultConfig.SpiderVisualKind = spiderVisualKind;
-        defaultConfig.SpiderMovementKind = spiderVisualKind == SpiderVisualKind.Cartoon ? SpiderMovementKind.Static : SpiderMovementKind.Idle;
-        selectedSpiderKindOption = spiderVisualKind.ToString();
+        currentConfig.SpiderVisualKind = spiderVisualKind;
+        currentConfig.SpiderMovementKind = spiderVisualKind == SpiderVisualKind.Cartoon ? SpiderMovementKind.Static : SpiderMovementKind.Idle;
         UpdateSelectionSummary();
     }
 
     public void OnMakeSpidersLargerChanged(bool isOn)
     {
-        defaultConfig.SpiderSizeKind = isOn ? SpiderSizeKind.Large : SpiderSizeKind.Small;
+        currentConfig.SpiderSizeKind = isOn ? SpiderSizeKind.Large : SpiderSizeKind.Small;
         UpdateSelectionSummary();
     }
 
     public void OnMaxOneActiveSpiderChanged(bool isOn)
     {
-        defaultConfig.MaxActiveSpiders = isOn ? 1 : defaultConfig.SpidersToCatch;
+        currentConfig.MaxActiveSpiders = isOn ? 1 : currentConfig.SpidersToCatch;
         UpdateSelectionSummary();
     }
 
@@ -53,8 +60,10 @@ public class LevelConfigMenuController : MonoBehaviour
     {
         int intValue = (int)value;
 
-        defaultConfig.MaxActiveSpiders = Mathf.Min(defaultConfig.MaxActiveSpiders, intValue); // if was larger than new value, reduce to match new value
-        defaultConfig.SpidersToCatch = intValue;
+        currentConfig.MaxActiveSpiders = Mathf.Min(currentConfig.MaxActiveSpiders, intValue); // if was larger than new value, reduce to match new value
+        currentConfig.SpidersToCatch = intValue;
+
+        spidersToCatchValueText.text = intValue.ToString();
 
         UpdateSelectionSummary();
     }
@@ -65,18 +74,13 @@ public class LevelConfigMenuController : MonoBehaviour
 
         Debug.Log($"Starting custom level with config: {config.DisplayName}, SpidersToCatch: {config.SpidersToCatch}, VisualKind: {config.SpiderVisualKind}, MovementKind: {config.SpiderMovementKind}");
 
+        lastSelectedConfig = config.Clone();
         gameManager.StartCustomLevel(config);
-    }
-
-    private void OnChangeNumberOfSpidersToCatch(int value)
-    {
-        defaultConfig.SpidersToCatch = value;
-        defaultConfig.MaxActiveSpiders = 1; // Mathf.Min(defaultConfig.MaxActiveSpiders, value);
     }
 
     private void UpdateSelectionSummary()
     {
-        selectionSummaryText.text = $"Selected Configuration:\n {defaultConfig.SpidersToCatch} spiders, as {selectedSpiderKindOption} kind";
+        selectionSummaryText.text = $"Selected Configuration:\n {currentConfig.SpidersToCatch} spiders, as {currentConfig.SpiderVisualKind.ToString().ToLower()} kind, of {currentConfig.SpiderSizeKind.ToString().ToLower()} size.";
     }
 
     private LevelConfig BuildLevelConfigFromSelected()
@@ -84,16 +88,16 @@ public class LevelConfigMenuController : MonoBehaviour
         return new LevelConfig
         {
             LevelId = "custom_runtime_level",
-            DisplayName = "Custom Level - " + selectedSpiderKindOption,
+            DisplayName = "Custom Level - " + currentConfig.SpiderVisualKind.ToString() + (currentConfig.SpiderSizeKind == SpiderSizeKind.Large ? " Large" : "") + " " + currentConfig.EnvironmentKind.ToString(),
             Description = "Custom level created from menu inputs.",
 
             EnvironmentKind = EnvironmentKind.Inside,
-            SpiderVisualKind = defaultConfig.SpiderVisualKind,
-            SpiderSizeKind = defaultConfig.SpiderSizeKind,
-            SpiderMovementKind = defaultConfig.SpiderMovementKind,
+            SpiderVisualKind = currentConfig.SpiderVisualKind,
+            SpiderSizeKind = currentConfig.SpiderSizeKind,
+            SpiderMovementKind = currentConfig.SpiderMovementKind,
 
-            SpidersToCatch = defaultConfig.SpidersToCatch,
-            MaxActiveSpiders = defaultConfig.MaxActiveSpiders,
+            SpidersToCatch = currentConfig.SpidersToCatch,
+            MaxActiveSpiders = currentConfig.MaxActiveSpiders,
 
             PanicModeBehavior = PanicModeBehavior.HideSpiders
         };
@@ -102,27 +106,24 @@ public class LevelConfigMenuController : MonoBehaviour
     [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
     public void OnSelectCartoonSpiderKind()
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Fantasy;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
-        selectedSpiderKindOption = "Cartoon";
+        currentConfig.SpiderVisualKind = SpiderVisualKind.Fantasy;
+        currentConfig.SpiderMovementKind = SpiderMovementKind.Idle;
         UpdateSelectionSummary();
     }
 
     [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
     public void OnSelectMixedSpiderKind()
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Cartoon;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Static;
-        selectedSpiderKindOption = "Mixed";
+        currentConfig.SpiderVisualKind = SpiderVisualKind.Cartoon;
+        currentConfig.SpiderMovementKind = SpiderMovementKind.Static;
         UpdateSelectionSummary();
     }
 
     [Obsolete("Method used in InitialVersion of Configuration; keep for now.")]
     public void OnSelectRealisticSpiderKind()
     {
-        defaultConfig.SpiderVisualKind = SpiderVisualKind.Realistic;
-        defaultConfig.SpiderMovementKind = SpiderMovementKind.Idle;
-        selectedSpiderKindOption = "Realistic";
+        currentConfig.SpiderVisualKind = SpiderVisualKind.Realistic;
+        currentConfig.SpiderMovementKind = SpiderMovementKind.Idle;
         UpdateSelectionSummary();
     }
 
@@ -131,7 +132,10 @@ public class LevelConfigMenuController : MonoBehaviour
     {
         var value = (int)spidersToCatchSlider.value;
         spidersToCatchValueText.text = value.ToString();
-        OnChangeNumberOfSpidersToCatch(value);
+
+        currentConfig.SpidersToCatch = value;
+        currentConfig.MaxActiveSpiders = 1;
+
         UpdateSelectionSummary();
     }
 }

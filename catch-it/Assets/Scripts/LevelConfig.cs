@@ -29,6 +29,23 @@ public class LevelConfig
     {
         return $"{DisplayName}: Your task is to find and catch <b><u>{SpidersToCatch}</u></b>{(SpiderSizeKind == SpiderSizeKind.Small ? "" : " a little larger")} {SpiderVisualKind.ToString().ToLower()} spiders. {MaxActiveSpiders} will appear at a time. They are in an {(EnvironmentKind == EnvironmentKind.Inside ? "indoor" : "open")} environment and have {SpiderMovementKind.ToString().ToLower()} movement.";
     }
+
+    public LevelConfig Clone()
+    {
+        return new LevelConfig
+        {
+            LevelId = this.LevelId,
+            DisplayName = this.DisplayName,
+            Description = this.Description,
+            EnvironmentKind = this.EnvironmentKind,
+            SpiderVisualKind = this.SpiderVisualKind,
+            SpiderSizeKind = this.SpiderSizeKind,
+            SpiderMovementKind = this.SpiderMovementKind,
+            SpidersToCatch = this.SpidersToCatch,
+            MaxActiveSpiders = this.MaxActiveSpiders,
+            PanicModeBehavior = this.PanicModeBehavior
+        };
+    }
 }
 
 public enum EnvironmentKind
